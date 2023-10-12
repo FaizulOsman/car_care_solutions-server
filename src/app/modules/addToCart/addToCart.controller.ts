@@ -1,0 +1,114 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Request, RequestHandler, Response } from 'express';
+import { AddToCartService } from './addToCart.service';
+import catchAsync from '../../../shared/catchAsync';
+import sendResponse from '../../../shared/sendResponse';
+import httpStatus from 'http-status';
+import { IAddToCart } from './addToCart.interface';
+import { addToCartFilterableFields } from './addToCart.constants';
+import { paginationFields } from '../../../constants/pagination';
+import { Secret } from 'jsonwebtoken';
+import config from '../../../config';
+import { pick } from '../../../shared/pick';
+import { jwtHelpers } from '../../../helper/jwtHelpers';
+
+// Create AddToCart
+const createAddToCart: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const token: any = req.headers.authorization;
+    const verifiedUser = jwtHelpers.verifyToken(
+      token,
+      config.jwt.secret as Secret
+    );
+
+    const { ...addToCartData } = req.body;
+
+    const result = await AddToCartService.createAddToCart(
+      addToCartData,
+      verifiedUser
+    );
+
+    // Send Response
+    sendResponse<IAddToCart>(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'AddToCart Created Successfully',
+      data: result,
+    });
+  }
+);
+
+// Get all addToCarts
+const getAllAddToCarts: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const filters = pick(req.query, addToCartFilterableFields);
+    const paginationOptions = pick(req.query, paginationFields);
+
+    const result = await AddToCartService.getAllAddToCarts(
+      filters,
+      paginationOptions
+    );
+
+    // Send Response
+    sendResponse<IAddToCart[]>(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'AddToCarts retrieved Successfully',
+      meta: result.meta,
+      data: result.data,
+    });
+  }
+);
+
+// Get single AddToCart by id
+const getSingleAddToCart: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const id = req.params.id;
+    const result = await AddToCartService.getSingleAddToCart(id);
+
+    // Send Response
+    sendResponse<IAddToCart>(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Get Single AddToCart Successfully',
+      data: result,
+    });
+  }
+);
+
+// Update AddToCart
+const updateAddToCart: RequestHandler = catchAsync(async (req, res) => {
+  const id = req.params.id;
+  const updateData = req.body;
+
+  const result = await AddToCartService.updateAddToCart(id, updateData);
+
+  sendResponse<IAddToCart>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'AddToCart updated successfully',
+    data: result,
+  });
+});
+
+// Delete AddToCart
+const deleteAddToCart: RequestHandler = catchAsync(async (req, res) => {
+  const id = req.params.id;
+
+  const result = await AddToCartService.deleteAddToCart(id);
+
+  sendResponse<IAddToCart>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'AddToCart deleted successfully',
+    data: result,
+  });
+});
+
+export const AddToCartController = {
+  createAddToCart,
+  getAllAddToCarts,
+  getSingleAddToCart,
+  updateAddToCart,
+  deleteAddToCart,
+};
