@@ -7,6 +7,15 @@ const createServiceZodValidation = z.object({
     location: z.string(),
     price: z.number(),
     image: z.string().optional(),
+    feedbacks: z
+      .array(
+        z.object({
+          name: z.string(),
+          email: z.string(),
+          message: z.string(),
+        })
+      )
+      .optional(),
     reviews: z
       .array(
         z.object({
@@ -27,6 +36,15 @@ const updateServiceZodValidation = z.object({
     location: z.string().optional(),
     price: z.number().optional(),
     image: z.string().optional(),
+    feedbacks: z
+      .array(
+        z.object({
+          name: z.string(),
+          email: z.string(),
+          message: z.string(),
+        })
+      )
+      .optional(),
     reviews: z
       .array(
         z.object({

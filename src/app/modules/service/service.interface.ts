@@ -7,12 +7,19 @@ export type IReview = {
   review?: string;
 };
 
+export type IFeedback = {
+  name?: string;
+  email?: string;
+  message?: string;
+};
+
 export type IService = {
   title: string;
   description: string;
   location: string;
   price: number;
   image?: string;
+  feedbacks?: IFeedback[];
   reviews?: IReview[];
 };
 
