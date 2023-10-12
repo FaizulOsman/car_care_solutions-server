@@ -8,6 +8,10 @@ const BookingSchema = new Schema<IBooking, BookingModel>(
       type: String,
       required: [false, 'serviceId is missing!'],
     },
+    dateTime: {
+      type: String,
+      required: [false, 'dateTime is missing!'],
+    },
   },
   {
     timestamps: true,
