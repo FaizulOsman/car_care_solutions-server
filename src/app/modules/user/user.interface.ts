@@ -4,11 +4,10 @@ import { Model } from 'mongoose';
 export type IUser = {
   _id: string;
   password: string;
-  role: 'user' | 'admin';
+  role: 'user' | 'admin' | 'super_admin';
   name: string;
   email: string;
   phone: string;
-  isPremium?: boolean;
 };
 
 export type IUserMethods = {

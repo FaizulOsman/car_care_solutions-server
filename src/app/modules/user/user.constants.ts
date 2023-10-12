@@ -1,4 +1,4 @@
-export const role = ['user', 'admin'];
+export const role = ['user', 'admin', 'super_admin'];
 
 export const UserSearchableFields = ['role', 'phoneNumber', 'name', 'email'];
 

@@ -8,7 +8,7 @@ const createUserZodSchema = z.object({
     password: z.string({
       required_error: 'password is required',
     }),
-    role: z.enum(['user', 'admin'], {
+    role: z.enum(['user', 'admin', 'super_admin'], {
       required_error: 'role is required',
     }),
     name: z.string({
