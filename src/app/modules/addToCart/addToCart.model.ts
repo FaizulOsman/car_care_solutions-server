@@ -6,7 +6,11 @@ const AddToCartSchema = new Schema<IAddToCart, AddToCartModel>(
   {
     serviceId: {
       type: String,
-      required: [false, 'serviceId is missing!'],
+      required: [true, 'serviceId is missing!'],
+    },
+    email: {
+      type: String,
+      required: [true, 'email is missing!'],
     },
   },
   {

@@ -1,15 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
-import { SortOrder } from 'mongoose';
-import { IAddToCart, IAddToCartFilters } from './addToCart.interface';
+import { IAddToCart } from './addToCart.interface';
 import { AddToCart } from './addToCart.model';
 import httpStatus from 'http-status';
-import { IPaginationOptions } from '../../../interfaces/pagination';
-import { addToCartSearchableFields } from './addToCart.constants';
-import { IGenericResponse } from '../../../interfaces/common';
 import { User } from '../user/user.model';
 import ApiError from '../../../errors/apiError';
-import { paginationHelper } from '../../../helper/paginationHelper';
+import { Service } from '../service/service.model';
 
 // Create AddToCart
 const createAddToCart = async (
@@ -26,58 +22,14 @@ const createAddToCart = async (
 };
 
 // Get All AddToCarts (can also filter)
-const getAllAddToCarts = async (
-  filters: IAddToCartFilters,
-  paginationOptions: IPaginationOptions
-): Promise<IGenericResponse<IAddToCart[]>> => {
-  // Try not to use any
-  const { searchTerm, ...filtersData } = filters;
+const getAllAddToCarts = async (verifiedUser: any): Promise<any> => {
+  const carts = await AddToCart.find({ email: verifiedUser?.email });
 
-  const andConditions = []; // Try not to use any
+  const result = await Service.find({
+    _id: carts.map(x => x.serviceId),
+  });
 
-  if (searchTerm) {
-    andConditions?.push({
-      $or: addToCartSearchableFields?.map(field => ({
-        [field]: {
-          $regex: searchTerm,
-          $options: 'i',
-        },
-      })),
-    });
-  }
-
-  if (Object.keys(filtersData).length) {
-    andConditions.push({
-      $and: Object.entries(filtersData).map(([field, value]) => {
-        return { [field]: value };
-      }),
-    });
-  }
-
-  const { page, limit, skip, sortBy, sortOrder } =
-    paginationHelper.calculatePagination(paginationOptions);
-
-  const sortCondition: '' | { [key: string]: SortOrder } = sortBy &&
-    sortOrder && { [sortBy]: sortOrder };
-
-  const whereCondition =
-    andConditions?.length > 0 ? { $and: andConditions } : {};
-
-  const result = await AddToCart.find(whereCondition)
-    .sort(sortCondition)
-    .skip(skip)
-    .limit(limit);
-
-  const total = await AddToCart.countDocuments(whereCondition);
-
-  return {
-    meta: {
-      page,
-      limit,
-      total,
-    },
-    data: result,
-  };
+  return result;
 };
 
 // Get Single AddToCart

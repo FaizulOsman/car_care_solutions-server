@@ -1,3 +1,3 @@
-export const addToCartFilterableFields = ['searchTerm', 'serviceId'];
+export const addToCartFilterableFields = ['searchTerm', 'serviceId', 'email'];
 
-export const addToCartSearchableFields = ['searchTerm', 'serviceId'];
+export const addToCartSearchableFields = ['searchTerm', 'serviceId', 'email'];

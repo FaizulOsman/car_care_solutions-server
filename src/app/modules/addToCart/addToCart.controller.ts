@@ -5,12 +5,10 @@ import catchAsync from '../../../shared/catchAsync';
 import sendResponse from '../../../shared/sendResponse';
 import httpStatus from 'http-status';
 import { IAddToCart } from './addToCart.interface';
-import { addToCartFilterableFields } from './addToCart.constants';
-import { paginationFields } from '../../../constants/pagination';
 import { Secret } from 'jsonwebtoken';
 import config from '../../../config';
-import { pick } from '../../../shared/pick';
 import { jwtHelpers } from '../../../helper/jwtHelpers';
+import { IGenericResponse } from '../../../interfaces/common';
 
 // Create AddToCart
 const createAddToCart: RequestHandler = catchAsync(
@@ -41,21 +39,20 @@ const createAddToCart: RequestHandler = catchAsync(
 // Get all addToCarts
 const getAllAddToCarts: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
-    const filters = pick(req.query, addToCartFilterableFields);
-    const paginationOptions = pick(req.query, paginationFields);
-
-    const result = await AddToCartService.getAllAddToCarts(
-      filters,
-      paginationOptions
+    const token: any = req.headers.authorization;
+    const verifiedUser = jwtHelpers.verifyToken(
+      token,
+      config.jwt.secret as Secret
     );
 
+    const result = await AddToCartService.getAllAddToCarts(verifiedUser);
+
     // Send Response
-    sendResponse<IAddToCart[]>(res, {
+    sendResponse<IGenericResponse<IAddToCart[]>>(res, {
       statusCode: httpStatus.OK,
       success: true,
       message: 'AddToCarts retrieved Successfully',
-      meta: result.meta,
-      data: result.data,
+      data: result,
     });
   }
 );
