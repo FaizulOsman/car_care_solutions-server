@@ -2,11 +2,12 @@ import { z } from 'zod';
 
 const createServiceZodValidation = z.object({
   body: z.object({
-    title: z.string(),
-    description: z.string(),
-    location: z.string(),
+    type: z.string(),
+    description: z.string().optional(),
+    location: z.string().optional(),
     price: z.number(),
     image: z.string().optional(),
+    facilities: z.array(z.string()).optional(),
     feedbacks: z
       .array(
         z.object({
@@ -31,11 +32,12 @@ const createServiceZodValidation = z.object({
 
 const updateServiceZodValidation = z.object({
   body: z.object({
-    title: z.string().optional(),
+    type: z.string(),
     description: z.string().optional(),
     location: z.string().optional(),
-    price: z.number().optional(),
+    price: z.number(),
     image: z.string().optional(),
+    facilities: z.array(z.string()).optional(),
     feedbacks: z
       .array(
         z.object({

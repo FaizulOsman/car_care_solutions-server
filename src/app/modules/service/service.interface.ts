@@ -14,11 +14,12 @@ export type IFeedback = {
 };
 
 export type IService = {
-  title: string;
-  description: string;
-  location: string;
+  type: string;
+  description?: string;
+  location?: string;
   price: number;
   image?: string;
+  facilities?: string[];
   feedbacks?: IFeedback[];
   reviews?: IReview[];
 };
@@ -28,6 +29,6 @@ export type ServiceModel = Model<IService, Record<string, unknown>>;
 
 export type IServiceFilters = {
   searchTerm?: string;
-  title?: string;
-  location?: string;
+  type?: string;
+  price?: string;
 };

@@ -4,17 +4,17 @@ import { IService, ServiceModel } from './service.interface';
 // Service Schema
 const ServiceSchema = new Schema<IService, ServiceModel>(
   {
-    title: {
+    type: {
       type: String,
       required: [true, 'title is missing!'],
     },
     description: {
       type: String,
-      required: [true, 'description is missing!'],
+      required: [false, 'description is missing!'],
     },
     location: {
       type: String,
-      required: [true, 'location is missing!'],
+      required: [false, 'location is missing!'],
     },
     price: {
       type: Number,
@@ -23,6 +23,10 @@ const ServiceSchema = new Schema<IService, ServiceModel>(
     image: {
       type: String,
       required: [false, 'image is missing!'],
+    },
+    facilities: {
+      type: Array,
+      required: [false, 'facilities is missing!'],
     },
     feedbacks: {
       type: Array,
