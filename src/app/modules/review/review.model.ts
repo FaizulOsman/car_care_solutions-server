@@ -13,8 +13,12 @@ const ReviewSchema = new Schema<IReview, ReviewModel>(
       required: [true, 'type is missing!'],
     },
     price: {
-      type: String,
+      type: Number,
       required: [true, 'price is missing!'],
+    },
+    name: {
+      type: String,
+      required: [true, 'name is missing!'],
     },
     email: {
       type: String,
