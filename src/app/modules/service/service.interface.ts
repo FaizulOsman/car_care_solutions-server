@@ -1,7 +1,7 @@
 import { Model } from 'mongoose';
 
 export type IReview = {
-  serviceId?: string;
+  name?: string;
   email?: string;
   rating?: number;
   review?: string;

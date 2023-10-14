@@ -11,7 +11,7 @@ const createServiceZodValidation = z.object({
     reviews: z
       .array(
         z.object({
-          serviceId: z.string(),
+          name: z.string(),
           email: z.string(),
           rating: z.number(),
           review: z.string(),
@@ -32,7 +32,7 @@ const updateServiceZodValidation = z.object({
     reviews: z
       .array(
         z.object({
-          serviceId: z.string(),
+          name: z.string(),
           email: z.string(),
           rating: z.number(),
           review: z.string(),

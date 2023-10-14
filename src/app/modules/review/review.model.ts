@@ -4,9 +4,17 @@ import { IReview, ReviewModel } from './review.interface';
 // Review Schema
 const ReviewSchema = new Schema<IReview, ReviewModel>(
   {
-    name: {
+    serviceId: {
       type: String,
-      required: [true, 'name is missing!'],
+      required: [true, 'serviceId is missing!'],
+    },
+    type: {
+      type: String,
+      required: [true, 'type is missing!'],
+    },
+    price: {
+      type: String,
+      required: [true, 'price is missing!'],
     },
     email: {
       type: String,

@@ -31,7 +31,6 @@ router.patch(
 
 router.patch(
   '/add-review/:id',
-  auth(ENUM_USER_ROLE.USER),
   validateRequest(ServiceValidation.updateServiceZodValidation),
   ServiceController.addReview
 );
