@@ -23,10 +23,10 @@ const createServiceZodValidation = z.object({
 
 const updateServiceZodValidation = z.object({
   body: z.object({
-    type: z.string(),
+    type: z.string().optional(),
     description: z.string().optional(),
     location: z.string().optional(),
-    price: z.number(),
+    price: z.number().optional(),
     image: z.string().optional(),
     facilities: z.array(z.string()).optional(),
     reviews: z
