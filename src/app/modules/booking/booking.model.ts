@@ -8,6 +8,10 @@ const BookingSchema = new Schema<IBooking, BookingModel>(
       type: String,
       required: [true, 'serviceId is missing!'],
     },
+    email: {
+      type: String,
+      required: [true, 'email is missing!'],
+    },
     date: {
       type: String,
       required: [true, 'date is missing!'],

@@ -2,6 +2,7 @@ import { Model } from 'mongoose';
 
 export type IBooking = {
   serviceId: string;
+  email: string;
   date: string;
   timeSlot: string;
 };
@@ -12,6 +13,7 @@ export type BookingModel = Model<IBooking, Record<string, unknown>>;
 export type IBookingFilters = {
   searchTerm?: string;
   serviceId?: string;
+  email?: string;
   date?: string;
   timeSlot?: string;
 };

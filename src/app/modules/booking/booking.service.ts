@@ -93,6 +93,18 @@ const getAllBookings = async (
   };
 };
 
+// Get My Bookings
+const getMyBookings = async (verifiedUser: any): Promise<any> => {
+  const findBookings = await Booking.find({ email: verifiedUser?.email });
+
+  // const result = await Service.find({
+  //   _id: findBookings.map(x => x.serviceId),
+  // });
+  // console.log(result);
+
+  return findBookings;
+};
+
 // Get Single Booking
 const getSingleBooking = async (id: string): Promise<IBooking | null> => {
   const result = await Booking.findById(id);
@@ -128,6 +140,7 @@ const deleteBooking = async (id: string): Promise<IBooking | null> => {
 export const BookingService = {
   createBooking,
   getAllBookings,
+  getMyBookings,
   getSingleBooking,
   updateBooking,
   deleteBooking,

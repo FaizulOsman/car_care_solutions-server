@@ -10,6 +10,7 @@ router.post(
   validateRequest(BookingValidation.createBookingZodValidation),
   BookingController.createBooking
 );
+router.get('/my-bookings', BookingController.getMyBookings);
 
 router.get('/:id', BookingController.getSingleBooking);
 

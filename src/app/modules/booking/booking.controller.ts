@@ -60,6 +60,27 @@ const getAllBookings: RequestHandler = catchAsync(
   }
 );
 
+// Get my bookings
+const getMyBookings: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const token: any = req.headers.authorization;
+    const verifiedUser = jwtHelpers.verifyToken(
+      token,
+      config.jwt.secret as Secret
+    );
+
+    const result = await BookingService.getMyBookings(verifiedUser);
+
+    // Send Response
+    sendResponse<IBooking[]>(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Bookings retrieved Successfully',
+      data: result,
+    });
+  }
+);
+
 // Get single Booking by id
 const getSingleBooking: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
@@ -108,6 +129,7 @@ const deleteBooking: RequestHandler = catchAsync(async (req, res) => {
 export const BookingController = {
   createBooking,
   getAllBookings,
+  getMyBookings,
   getSingleBooking,
   updateBooking,
   deleteBooking,
