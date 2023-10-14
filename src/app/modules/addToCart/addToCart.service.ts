@@ -17,6 +17,17 @@ const createAddToCart = async (
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
 
+  const isExist = await AddToCart.find({
+    $and: [{ serviceId: payload?.serviceId }, { email: payload?.email }],
+  });
+
+  if (isExist?.length > 0) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      'You already have added this service to cart.'
+    );
+  }
+
   const result = await AddToCart.create(payload);
   return result;
 };
