@@ -97,7 +97,7 @@ const deleteAddToCart: RequestHandler = catchAsync(async (req, res) => {
   sendResponse<IAddToCart>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'AddToCart deleted successfully',
+    message: 'Cart deleted successfully',
     data: result,
   });
 });

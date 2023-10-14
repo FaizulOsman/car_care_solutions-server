@@ -68,9 +68,9 @@ const updateAddToCart = async (
 
 // Delete AddToCart
 const deleteAddToCart = async (id: string): Promise<IAddToCart | null> => {
-  const result = await AddToCart.findByIdAndDelete(id);
+  const result = await AddToCart.findOneAndDelete({ serviceId: id });
   if (!result) {
-    throw new ApiError(httpStatus.FORBIDDEN, 'AddToCart Not Found');
+    throw new ApiError(httpStatus.FORBIDDEN, 'Cart Not Found');
   }
   return result;
 };
