@@ -2,6 +2,8 @@ import { Model } from 'mongoose';
 
 export type IBooking = {
   serviceId: string;
+  type: string;
+  price: number;
   email: string;
   date: string;
   timeSlot: string;

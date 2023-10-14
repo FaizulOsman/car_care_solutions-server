@@ -95,14 +95,15 @@ const getAllBookings = async (
 
 // Get My Bookings
 const getMyBookings = async (verifiedUser: any): Promise<any> => {
-  const findBookings = await Booking.find({ email: verifiedUser?.email });
+  let result = {};
 
-  // const result = await Service.find({
-  //   _id: findBookings.map(x => x.serviceId),
-  // });
-  // console.log(result);
+  if (verifiedUser?.role === 'admin' || verifiedUser?.role === 'super_admin') {
+    result = await Booking.find();
+  } else {
+    result = await Booking.find({ email: verifiedUser?.email });
+  }
 
-  return findBookings;
+  return result;
 };
 
 // Get Single Booking
