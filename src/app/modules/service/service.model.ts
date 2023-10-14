@@ -28,10 +28,6 @@ const ServiceSchema = new Schema<IService, ServiceModel>(
       type: Array,
       required: [false, 'facilities is missing!'],
     },
-    feedbacks: {
-      type: Array,
-      required: [false, 'feedback is missing!'],
-    },
     reviews: {
       type: Array,
       required: [false, 'reviews is missing!'],
