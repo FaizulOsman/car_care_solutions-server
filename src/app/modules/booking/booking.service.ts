@@ -21,6 +21,19 @@ const createBooking = async (
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
 
+  const alreadyBookedInThisTimeSlot = await Booking.find({
+    $and: [
+      { serviceId: payload?.serviceId },
+      { date: payload?.date },
+      { timeSlot: payload?.timeSlot },
+    ],
+  });
+  if (alreadyBookedInThisTimeSlot?.length > 0) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      'Already Booked In this time slot'
+    );
+  }
   const result = await Booking.create(payload);
   return result;
 };
