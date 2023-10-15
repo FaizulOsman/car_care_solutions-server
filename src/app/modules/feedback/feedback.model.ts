@@ -4,10 +4,6 @@ import { IFeedback, FeedbackModel } from './feedback.interface';
 // Feedback Schema
 const FeedbackSchema = new Schema<IFeedback, FeedbackModel>(
   {
-    name: {
-      type: String,
-      required: [true, 'name is missing!'],
-    },
     email: {
       type: String,
       required: [true, 'email is missing!'],
