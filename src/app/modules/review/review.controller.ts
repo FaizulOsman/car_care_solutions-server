@@ -35,6 +35,27 @@ const createReview: RequestHandler = catchAsync(
   }
 );
 
+// Create Review
+const getMyReviews: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const token: any = req.headers.authorization;
+    const verifiedUser = jwtHelpers.verifyToken(
+      token,
+      config.jwt.secret as Secret
+    );
+
+    const result = await ReviewService.getMyReviews(verifiedUser);
+
+    // Send Response
+    sendResponse<IReview>(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Review Retrieved Successfully',
+      data: result,
+    });
+  }
+);
+
 // Get all reviews
 const getAllReviews: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
@@ -104,6 +125,7 @@ const deleteReview: RequestHandler = catchAsync(async (req, res) => {
 
 export const ReviewController = {
   createReview,
+  getMyReviews,
   getAllReviews,
   getSingleReview,
   updateReview,

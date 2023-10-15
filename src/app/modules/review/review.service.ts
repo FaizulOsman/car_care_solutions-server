@@ -25,6 +25,19 @@ const createReview = async (
   return result;
 };
 
+// Get My Reviews
+const getMyReviews = async (verifiedUser: any): Promise<any> => {
+  let result = {};
+
+  if (verifiedUser?.role === 'admin' || verifiedUser?.role === 'super_admin') {
+    result = await Review.find();
+  } else {
+    result = await Review.find({ email: verifiedUser?.email });
+  }
+
+  return result;
+};
+
 // Get All Reviews (can also filter)
 const getAllReviews = async (
   filters: IReviewFilters,
@@ -114,6 +127,7 @@ const deleteReview = async (id: string): Promise<IReview | null> => {
 
 export const ReviewService = {
   createReview,
+  getMyReviews,
   getAllReviews,
   getSingleReview,
   updateReview,
