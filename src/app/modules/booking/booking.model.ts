@@ -28,6 +28,14 @@ const BookingSchema = new Schema<IBooking, BookingModel>(
       type: String,
       required: [true, 'timeSlot is missing!'],
     },
+    isAccepted: {
+      type: Boolean,
+      required: [true, 'isAccepted is missing!'],
+    },
+    isRejected: {
+      type: Boolean,
+      required: [true, 'isRejected is missing!'],
+    },
   },
   {
     timestamps: true,

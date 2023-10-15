@@ -7,6 +7,8 @@ export type IBooking = {
   email: string;
   date: string;
   timeSlot: string;
+  isAccepted: boolean;
+  isRejected: boolean;
 };
 
 // Booking Model

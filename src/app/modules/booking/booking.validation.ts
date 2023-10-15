@@ -8,6 +8,8 @@ const createBookingZodValidation = z.object({
     email: z.string().optional(),
     date: z.string().optional(),
     timeSlot: z.string().optional(),
+    isAccepted: z.boolean().optional(),
+    isRejected: z.boolean().optional(),
   }),
 });
 
@@ -19,6 +21,8 @@ const updateBookingZodValidation = z.object({
     email: z.string().optional(),
     date: z.string().optional(),
     timeSlot: z.string().optional(),
+    isAccepted: z.boolean().optional(),
+    isRejected: z.boolean().optional(),
   }),
 });
 
