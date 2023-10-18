@@ -3,10 +3,10 @@ import { z } from 'zod';
 const createServiceZodValidation = z.object({
   body: z.object({
     type: z.string(),
+    status: z.string().optional(),
     description: z.string().optional(),
     location: z.string().optional(),
     price: z.number(),
-    image: z.string().optional(),
     facilities: z.array(z.string()).optional(),
     reviews: z
       .array(
@@ -24,10 +24,10 @@ const createServiceZodValidation = z.object({
 const updateServiceZodValidation = z.object({
   body: z.object({
     type: z.string().optional(),
+    status: z.string().optional(),
     description: z.string().optional(),
     location: z.string().optional(),
     price: z.number().optional(),
-    image: z.string().optional(),
     facilities: z.array(z.string()).optional(),
     reviews: z
       .array(

@@ -9,10 +9,10 @@ export type IReview = {
 
 export type IService = {
   type: string;
+  status: string;
   description?: string;
   location?: string;
   price: number;
-  image?: string;
   facilities?: string[];
   reviews?: IReview[];
 };

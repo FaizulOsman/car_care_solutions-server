@@ -5,10 +5,10 @@ const zod_1 = require("zod");
 const createServiceZodValidation = zod_1.z.object({
     body: zod_1.z.object({
         type: zod_1.z.string(),
+        status: zod_1.z.string().optional(),
         description: zod_1.z.string().optional(),
         location: zod_1.z.string().optional(),
         price: zod_1.z.number(),
-        image: zod_1.z.string().optional(),
         facilities: zod_1.z.array(zod_1.z.string()).optional(),
         reviews: zod_1.z
             .array(zod_1.z.object({
@@ -23,10 +23,10 @@ const createServiceZodValidation = zod_1.z.object({
 const updateServiceZodValidation = zod_1.z.object({
     body: zod_1.z.object({
         type: zod_1.z.string().optional(),
+        status: zod_1.z.string().optional(),
         description: zod_1.z.string().optional(),
         location: zod_1.z.string().optional(),
         price: zod_1.z.number().optional(),
-        image: zod_1.z.string().optional(),
         facilities: zod_1.z.array(zod_1.z.string()).optional(),
         reviews: zod_1.z
             .array(zod_1.z.object({

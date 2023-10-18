@@ -12,6 +12,10 @@ const ServiceSchema = new Schema<IService, ServiceModel>(
       type: String,
       required: [false, 'description is missing!'],
     },
+    status: {
+      type: String,
+      required: [false, 'status is missing!'],
+    },
     location: {
       type: String,
       required: [false, 'location is missing!'],
@@ -19,10 +23,6 @@ const ServiceSchema = new Schema<IService, ServiceModel>(
     price: {
       type: Number,
       required: [true, 'price is missing!'],
-    },
-    image: {
-      type: String,
-      required: [false, 'image is missing!'],
     },
     facilities: {
       type: Array,
