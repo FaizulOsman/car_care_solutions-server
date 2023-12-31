@@ -24,4 +24,5 @@ export type IServiceFilters = {
   searchTerm?: string;
   type?: string;
   price?: string;
+  status?: string;
 };

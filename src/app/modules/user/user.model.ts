@@ -30,6 +30,14 @@ const userSchema = new Schema<IUser, UserModel>(
       required: true,
       unique: true,
     },
+    address: {
+      type: String,
+      required: false,
+    },
+    imageUrl: {
+      type: String,
+      required: false,
+    },
   },
   {
     timestamps: true,

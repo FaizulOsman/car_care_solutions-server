@@ -42,6 +42,14 @@ const userSchema = new Schema({
         required: true,
         unique: true,
     },
+    address: {
+        type: String,
+        required: false,
+    },
+    imageUrl: {
+        type: String,
+        required: false,
+    },
 }, {
     timestamps: true,
     toJSON: {

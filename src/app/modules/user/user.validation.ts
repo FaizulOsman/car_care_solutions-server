@@ -7,6 +7,8 @@ const updateUserZodSchema = z.object({
     role: z.enum(['user', 'admin', 'super_admin']).optional(),
     name: z.string().optional(),
     phone: z.string().optional(),
+    address: z.string().optional(),
+    imageUrl: z.string().optional(),
   }),
 });
 

@@ -8,6 +8,8 @@ export type IUser = {
   name: string;
   email: string;
   phone: string;
+  address?: string;
+  imageUrl?: string;
 };
 
 export type IUserMethods = {
