@@ -28,45 +28,53 @@ const createFeedback = async (
 // Get All Feedbacks (can also filter)
 const getAllFeedbacks = async (
   filters: IFeedbackFilters,
-  paginationOptions: IPaginationOptions
+  paginationOptions: IPaginationOptions,
+  verifiedUser: any
 ): Promise<IGenericResponse<IFeedback[]>> => {
-  // Try not to use any
   const { searchTerm, ...filtersData } = filters;
-
-  const andConditions = []; // Try not to use any
-
-  if (searchTerm) {
-    andConditions?.push({
-      $or: feedbackSearchableFields?.map(field => ({
-        [field]: {
-          $regex: searchTerm,
-          $options: 'i',
-        },
-      })),
-    });
-  }
-
-  if (Object.keys(filtersData).length) {
-    andConditions.push({
-      $and: Object.entries(filtersData).map(([field, value]) => {
-        return { [field]: value };
-      }),
-    });
-  }
-
   const { page, limit, skip, sortBy, sortOrder } =
     paginationHelper.calculatePagination(paginationOptions);
+  const sortCondition: null | { [key: string]: SortOrder } =
+    sortBy && sortOrder ? { [sortBy]: sortOrder } : null;
 
-  const sortCondition: '' | { [key: string]: SortOrder } = sortBy &&
-    sortOrder && { [sortBy]: sortOrder };
+  const andConditions = [];
+
+  if (searchTerm) {
+    const searchConditions = feedbackSearchableFields?.map(field => ({
+      [field]: {
+        $regex: searchTerm,
+        $options: 'i',
+      },
+    }));
+    andConditions.push({ $or: searchConditions });
+  }
+
+  if (Object.keys(filtersData).length > 0) {
+    const filterConditions = Object.entries(filtersData).map(
+      ([field, value]) => ({ [field]: value })
+    );
+    andConditions.push({ $and: filterConditions });
+  }
 
   const whereCondition =
-    andConditions?.length > 0 ? { $and: andConditions } : {};
+    andConditions.length > 0 ? { $and: andConditions } : {};
 
-  const result = await Feedback.find(whereCondition)
-    .sort(sortCondition)
-    .skip(skip)
-    .limit(limit);
+  let result: IFeedback[] = [];
+
+  if (verifiedUser?.role === 'admin' || verifiedUser?.role === 'super_admin') {
+    result = await Feedback.find(whereCondition)
+      .sort(sortCondition)
+      .skip(skip)
+      .limit(limit);
+  } else {
+    result = await Feedback.find({
+      ...whereCondition,
+      email: verifiedUser?.email,
+    })
+      .sort(sortCondition)
+      .skip(skip)
+      .limit(limit);
+  }
 
   const total = await Feedback.countDocuments(whereCondition);
 

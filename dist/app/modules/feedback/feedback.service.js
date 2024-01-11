@@ -40,35 +40,38 @@ const createFeedback = (payload, verifiedUser) => __awaiter(void 0, void 0, void
     return result;
 });
 // Get All Feedbacks (can also filter)
-const getAllFeedbacks = (filters, paginationOptions) => __awaiter(void 0, void 0, void 0, function* () {
-    // Try not to use any
+const getAllFeedbacks = (filters, paginationOptions, verifiedUser) => __awaiter(void 0, void 0, void 0, function* () {
     const { searchTerm } = filters, filtersData = __rest(filters, ["searchTerm"]);
-    const andConditions = []; // Try not to use any
-    if (searchTerm) {
-        andConditions === null || andConditions === void 0 ? void 0 : andConditions.push({
-            $or: feedback_constants_1.feedbackSearchableFields === null || feedback_constants_1.feedbackSearchableFields === void 0 ? void 0 : feedback_constants_1.feedbackSearchableFields.map(field => ({
-                [field]: {
-                    $regex: searchTerm,
-                    $options: 'i',
-                },
-            })),
-        });
-    }
-    if (Object.keys(filtersData).length) {
-        andConditions.push({
-            $and: Object.entries(filtersData).map(([field, value]) => {
-                return { [field]: value };
-            }),
-        });
-    }
     const { page, limit, skip, sortBy, sortOrder } = paginationHelper_1.paginationHelper.calculatePagination(paginationOptions);
-    const sortCondition = sortBy &&
-        sortOrder && { [sortBy]: sortOrder };
-    const whereCondition = (andConditions === null || andConditions === void 0 ? void 0 : andConditions.length) > 0 ? { $and: andConditions } : {};
-    const result = yield feedback_model_1.Feedback.find(whereCondition)
-        .sort(sortCondition)
-        .skip(skip)
-        .limit(limit);
+    const sortCondition = sortBy && sortOrder ? { [sortBy]: sortOrder } : null;
+    const andConditions = [];
+    if (searchTerm) {
+        const searchConditions = feedback_constants_1.feedbackSearchableFields === null || feedback_constants_1.feedbackSearchableFields === void 0 ? void 0 : feedback_constants_1.feedbackSearchableFields.map(field => ({
+            [field]: {
+                $regex: searchTerm,
+                $options: 'i',
+            },
+        }));
+        andConditions.push({ $or: searchConditions });
+    }
+    if (Object.keys(filtersData).length > 0) {
+        const filterConditions = Object.entries(filtersData).map(([field, value]) => ({ [field]: value }));
+        andConditions.push({ $and: filterConditions });
+    }
+    const whereCondition = andConditions.length > 0 ? { $and: andConditions } : {};
+    let result = [];
+    if ((verifiedUser === null || verifiedUser === void 0 ? void 0 : verifiedUser.role) === 'admin' || (verifiedUser === null || verifiedUser === void 0 ? void 0 : verifiedUser.role) === 'super_admin') {
+        result = yield feedback_model_1.Feedback.find(whereCondition)
+            .sort(sortCondition)
+            .skip(skip)
+            .limit(limit);
+    }
+    else {
+        result = yield feedback_model_1.Feedback.find(Object.assign(Object.assign({}, whereCondition), { email: verifiedUser === null || verifiedUser === void 0 ? void 0 : verifiedUser.email }))
+            .sort(sortCondition)
+            .skip(skip)
+            .limit(limit);
+    }
     const total = yield feedback_model_1.Feedback.countDocuments(whereCondition);
     return {
         meta: {

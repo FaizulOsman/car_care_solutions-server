@@ -43,10 +43,16 @@ const getAllFeedbacks: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const filters = pick(req.query, feedbackFilterableFields);
     const paginationOptions = pick(req.query, paginationFields);
+    const token: any = req.headers.authorization;
+    const verifiedUser = jwtHelpers.verifyToken(
+      token,
+      config.jwt.secret as Secret
+    );
 
     const result = await FeedbackService.getAllFeedbacks(
       filters,
-      paginationOptions
+      paginationOptions,
+      verifiedUser
     );
 
     // Send Response
